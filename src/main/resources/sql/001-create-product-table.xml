@@ -1,0 +1,43 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="001-create-product-table" author="your-name">
+        <createTable tableName="product">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="TIMESTAMP"/>
+            <column name="updated_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="TIMESTAMP"/>
+            <column name="tenant_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="sku" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="effect_start_date" type="DATE"/>
+            <column name="effect_end_date" type="DATE"/>
+            <column name="deleted" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="category" type="ENUM('BASE', 'ADD_ON', 'OTHER')"/>
+            <column name="product_number" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- Add unique constraints -->
+        <addUniqueConstraint columnNames="tenant_id, sku" tableName="product" constraintName="uk_product_tenantId_sku"/>
+        <addUniqueConstraint columnNames="tenant_id, product_number" tableName="product" constraintName="uk_product_tenantId_product_number"/>
+    </changeSet>
+</databaseChangeLog>
