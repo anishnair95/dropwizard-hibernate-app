@@ -19,6 +19,11 @@ public class ProductDAO extends RepositoryImpl<Product, Long> {
         super(sessionFactory);
     }
 
+    /**
+     * Query to get all products
+     * Using criteria query to get all products
+     * @return
+     */
     public List<Product> getProducts() {
         RequestContext requestContext = ContextUtils.getRequestContext();
         CriteriaBuilder criteriaBuilder = currentSession().getCriteriaBuilder();

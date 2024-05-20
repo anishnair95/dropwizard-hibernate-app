@@ -48,7 +48,7 @@ public class ProductResource {
     @POST
     @UnitOfWork
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON) // without @Valid annotation the hibernate validator doesn't work
     public Response createProduct(@NotNull @Valid ProductRequest product) {
 //        return DataConvertor.productEntityToResponse(productService.createProduct(product));
         // could be like below if we keep Response object in return type
