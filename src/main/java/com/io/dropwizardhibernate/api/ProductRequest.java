@@ -20,7 +20,7 @@ public class ProductRequest {
     @NotNull(message = "Product name cannot be null")
     @NotEmpty(message = "Product name cannot be empty")
     private String productName;
-    @Size(max = 255, message = "Description cannot be more than 255 characters")
+    @Size(max = 20, message = "Invalid value: '${validatedValue}'. Description cannot be more than 255 characters")
     private String description;
     @Size(max = 50, message = "cannot be more than 50 characters")
     private String sku;
