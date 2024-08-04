@@ -6,18 +6,21 @@ import static com.io.dropwizardhibernate.convertor.DataConvertor.productEntityTo
 import com.io.dropwizardhibernate.api.Product;
 import com.io.dropwizardhibernate.api.ProductRequest;
 import com.io.dropwizardhibernate.convertor.DataConvertor;
-import com.io.dropwizardhibernate.db.ProductDAO;
 import com.io.dropwizardhibernate.services.ProductService;
 import io.dropwizard.hibernate.UnitOfWork;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -29,6 +32,7 @@ public class ProductResource {
 
     private final ProductService productService;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductResource.class);
     public ProductResource(ProductService productService) {
         this.productService = productService;
     }
@@ -63,6 +67,27 @@ public class ProductResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Product> getProducts() {
         return DataConvertor.productEntitiesToResponse(productService.getProducts());
+    }
+
+    @PUT
+    @Path("/{id}")
+    @UnitOfWork
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateProduct(@PathParam("id") Long id, @Valid ProductRequest request) {
+        // update the product
+        LOGGER.info("Updating product with id: {}", id);
+        return Response.ok()
+                .entity(DataConvertor.productEntityToResponse(productService.updateProduct(id, request)))
+                .build();
+    }
+
+    @DELETE
+    @UnitOfWork
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{id}")
+    public Response deleteProduct(@PathParam("id") Long id) {
+        productService.deleteProduct(id);
+        return Response.ok().entity(Map.of("success", true)).build();
     }
 
 }

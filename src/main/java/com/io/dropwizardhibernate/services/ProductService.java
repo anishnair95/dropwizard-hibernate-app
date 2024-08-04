@@ -1,5 +1,6 @@
 package com.io.dropwizardhibernate.services;
 
+import com.io.dropwizardhibernate.api.ProductRequest;
 import com.io.dropwizardhibernate.core.Product;
 
 import java.util.List;
@@ -13,7 +14,9 @@ public interface ProductService {
 
     List<Product> getProducts();
 
-//    Product updateProduct(Long id, ProductRequest productRequest);
+    Product updateProduct(Long id, ProductRequest productRequest);
+
+    void deleteProduct(Long id);
 //
 //    void deleteProduct(Long id);
 //

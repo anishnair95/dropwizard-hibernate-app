@@ -1,5 +1,7 @@
 package com.io.dropwizardhibernate.db;
 
+import static java.util.Objects.requireNonNull;
+
 import io.dropwizard.hibernate.AbstractDAO;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -33,6 +35,26 @@ public class RepositoryImpl<T, ID extends Serializable> extends AbstractDAO<T> {
 
     public T saveOrUpdate(T entity) {
         return persist(entity);
+    }
+
+    /**
+     * update entity
+     * @param entity entity to update
+     * @return updated entity
+     */
+    public T update(T entity) {
+        getCurrentSession().update(requireNonNull(entity));
+        return entity;
+    }
+
+
+    /**
+     * merge entity
+     * @param entity entity to merge
+     * @return merged entity
+     */
+    public T merge(T entity) {
+        return (T) getCurrentSession().merge(entity);
     }
 
     // TODO: batch save

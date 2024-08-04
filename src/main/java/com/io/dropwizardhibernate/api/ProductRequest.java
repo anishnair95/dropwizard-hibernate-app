@@ -18,15 +18,15 @@ import javax.validation.constraints.Size;
 public class ProductRequest {
 
     @NotNull(message = "Product name cannot be null")
-    @NotEmpty(message = "Product name cannot be empty")
+    @NotEmpty(message = "Product name cannot be null or empty")
     private String productName;
-    @Size(max = 20, message = "Invalid value: '${validatedValue}'. Description cannot be more than 255 characters")
+    @Size(max = 20, message = "Invalid value: '${validatedValue}'. Description cannot be more than '{max}' characters")
     private String description;
-    @Size(max = 50, message = "cannot be more than 50 characters")
+    @Size(max = 50, message = "Invalid value: '${validatedValue}'. Sku cannot be more than '{max}' characters")
     private String sku;
     private Date effectStartDate;
     private Date effectEndDate;
     private String category;
-    @Size(max = 50, message = "cannot be more than 50 characters")
+    @Size(max = 50, message = "Invalid value: '${validatedValue}'. Product Number cannot be more than '{max}' characters")
     private String productNumber;
 }

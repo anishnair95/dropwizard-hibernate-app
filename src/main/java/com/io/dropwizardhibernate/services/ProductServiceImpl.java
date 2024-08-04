@@ -1,5 +1,7 @@
 package com.io.dropwizardhibernate.services;
 
+import com.io.dropwizardhibernate.ProductMapper;
+import com.io.dropwizardhibernate.api.ProductRequest;
 import com.io.dropwizardhibernate.core.Product;
 import com.io.dropwizardhibernate.db.ProductDAO;
 
@@ -28,5 +30,21 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getProducts() {
         return productDAO.getProducts();
+    }
+
+    @Override
+    public Product updateProduct(Long id, ProductRequest productRequest) {
+        Product product = productDAO.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+        ProductMapper productMapper = ProductMapper.INSTANCE;
+        Product requestEntity = productMapper.apiToEntity(productRequest);
+        requestEntity.setId(id);
+        productMapper.mergeOldAndSavingEntity(requestEntity, product);
+        return productDAO.update(product);
+    }
+
+    @Override
+    public void deleteProduct(Long id) {
+        productDAO.deleteById(id);
     }
 }
