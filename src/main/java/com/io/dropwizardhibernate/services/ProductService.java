@@ -14,7 +14,7 @@ public interface ProductService {
 
     List<Product> getProducts();
 
-    Product updateProduct(Long id, ProductRequest productRequest);
+    Product updateProduct(Long id, ProductRequest productRequest, boolean isPatch);
 
     void deleteProduct(Long id);
 //

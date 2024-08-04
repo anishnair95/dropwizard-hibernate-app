@@ -19,6 +19,7 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -28,7 +29,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/product")
-public class ProductResource {
+public class ProductResource extends BaseResource {
 
     private final ProductService productService;
 
@@ -69,17 +70,32 @@ public class ProductResource {
         return DataConvertor.productEntitiesToResponse(productService.getProducts());
     }
 
+    @PATCH
+    @Path("/{id}")
+    @UnitOfWork
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateProductPatch(@PathParam("id") Long id, @Valid ProductRequest request) {
+        // update the product
+        return doRest(() -> {
+            LOGGER.info("Updating product with id: {}", id);
+            return DataConvertor.productEntityToResponse(productService.updateProduct(id, request, true));
+        });
+    }
+
     @PUT
     @Path("/{id}")
     @UnitOfWork
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateProduct(@PathParam("id") Long id, @Valid ProductRequest request) {
         // update the product
-        LOGGER.info("Updating product with id: {}", id);
-        return Response.ok()
-                .entity(DataConvertor.productEntityToResponse(productService.updateProduct(id, request)))
-                .build();
+        return doRest(() -> {
+            LOGGER.info("Updating product with id: {}", id);
+            return Response.ok()
+                    .entity(DataConvertor.productEntityToResponse(productService.updateProduct(id, request, false)))
+                    .build();
+        });
     }
+
 
     @DELETE
     @UnitOfWork
