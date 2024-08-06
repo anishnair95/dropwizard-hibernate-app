@@ -17,7 +17,9 @@ public class BaseResource {
         // do something
         Either<T,R> response = getResponse(producer);
         if (response.isRight()) {
-            return Response.ok(response.right()).build();
+            return Response.ok()
+                    .entity(response.right())
+                    .build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(response.left())
